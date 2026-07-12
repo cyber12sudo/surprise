@@ -178,6 +178,7 @@
   }
 
   .polaroid:nth-child(1) { transform: rotate(-4deg); }
+  .polaroid:nth-child(2) { transform: rotate(3deg); }
 
   .polaroid img {
     width: 100%;
@@ -521,70 +522,6 @@
 
   .wish-star:disabled { cursor: default; }
 
-  /* ---------- SECOND BOX: "anything else" note ---------- */
-  .note-divider {
-    width: 1px;
-    height: 46px;
-    background: linear-gradient(180deg, transparent, rgba(217,180,118,0.4), transparent);
-    margin: 3rem 0;
-  }
-
-  .note-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1.1rem;
-    width: 100%;
-    max-width: 420px;
-  }
-
-  .note-form textarea {
-    width: 100%;
-    min-height: 80px;
-    resize: vertical;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(185, 175, 212, 0.3);
-    border-radius: 2px;
-    color: var(--cream);
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 1.1rem;
-    padding: 0.9rem 1.1rem;
-    line-height: 1.5;
-    transition: border-color 0.4s ease, box-shadow 0.4s ease;
-  }
-
-  .note-form textarea::placeholder { color: #736d8c; }
-
-  .note-form textarea:focus {
-    outline: none;
-    border-color: var(--lavender);
-    box-shadow: 0 0 0 3px rgba(185, 175, 212, 0.14);
-  }
-
-  .note-send {
-    background: none;
-    border: 1px solid rgba(185, 175, 212, 0.5);
-    color: var(--lavender);
-    font-family: 'Jost', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    padding: 0.7rem 1.8rem;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background 0.35s ease, color 0.35s ease, border-color 0.35s ease;
-  }
-
-  .note-send:hover {
-    background: var(--lavender);
-    color: var(--midnight-deep);
-    border-color: var(--lavender);
-  }
-
-  .note-send:disabled { cursor: wait; opacity: 0.7; }
-  .note-send:focus-visible { outline: 2px solid var(--lavender); outline-offset: 4px; }
-
   @media (prefers-reduced-motion: reduce) {
     .star, .scroll-hint .line, .wish-star:hover, .petal,
     .hero-content .eyebrow, .hero-content h1, .hero-content .from-line, .hero-content p.sub, .scroll-hint,
@@ -655,7 +592,7 @@
   <div class="night-content reveal">
     <p class="eyebrow">Before you go</p>
     <h2>Make a wish</h2>
-    <p>Write down what you want then tap the star to send it out into the sky.</p>
+    <p>Ammara Write down what you want then tap the star to send it out into the sky.</p>
 
     <form class="wish-form" id="wishForm">
       <!-- Honeypot field to catch spam bots; leave this hidden input as-is -->
@@ -677,18 +614,6 @@
     <p class="wish-message" id="wishMsg">Whatever it was — I hope it finds you. Happy birthday.</p>
 
     <p class="closing-line">Enjor your special day, May Allah bless you.</p>
-
-    <div class="note-divider"></div>
-
-    <p class="eyebrow">One more thing</p>
-    <p>Anything else? except thank you.</p>
-
-    <form class="note-form" id="noteForm">
-      <input type="text" name="_gotcha" style="display:none">
-      <textarea name="message" id="noteInput" placeholder="Say anything..." required></textarea>
-      <button type="submit" class="note-send" id="noteSendBtn">Send it</button>
-      <p class="wish-status" id="noteStatus"></p>
-    </form>
   </div>
 </section>
 
@@ -799,47 +724,6 @@
       wishStatus.classList.add('show', 'error');
     } finally {
       wishBtn.classList.remove('sending');
-    }
-  });
-
-  // ---- Second box: "anything else" note, sent to its own inbox ----
-  const NOTE_ENDPOINT = "https://formspree.io/f/xzdnpoop";
-
-  const noteForm = document.getElementById('noteForm');
-  const noteInput = document.getElementById('noteInput');
-  const noteSendBtn = document.getElementById('noteSendBtn');
-  const noteStatus = document.getElementById('noteStatus');
-
-  noteForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const noteText = noteInput.value.trim();
-    if (!noteText) return;
-
-    noteSendBtn.disabled = true;
-    noteSendBtn.textContent = 'Sending...';
-    noteStatus.classList.remove('show', 'error');
-
-    try {
-      const res = await fetch(NOTE_ENDPOINT, {
-        method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(noteForm)
-      });
-
-      if (res.ok) {
-        noteSendBtn.textContent = 'Sent';
-        noteInput.value = '';
-        noteInput.disabled = true;
-        noteStatus.textContent = 'Got it — thank you.';
-        noteStatus.classList.add('show');
-      } else {
-        throw new Error('Request failed');
-      }
-    } catch (err) {
-      noteSendBtn.disabled = false;
-      noteSendBtn.textContent = 'Send it';
-      noteStatus.textContent = "Couldn't send just now — try again?";
-      noteStatus.classList.add('show', 'error');
     }
   });
 
