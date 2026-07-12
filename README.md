@@ -1,1 +1,452 @@
-# surprise
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FBF5EE;
+    --blush: #F3D9D6;
+    --rose: #C98B90;
+    --midnight: #14162B;
+    --midnight-deep: #0B0C1B;
+    --lavender: #B9AFD4;
+    --gold: #D9B476;
+    --ink: #2E2A33;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Jost', sans-serif;
+    font-weight: 300;
+    color: var(--ink);
+    overflow-x: hidden;
+    background: var(--cream);
+  }
+
+  h1, h2, .display {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 500;
+  }
+
+  .eyebrow {
+    font-family: 'Jost', sans-serif;
+    font-size: 0.72rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    font-weight: 400;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(180deg, var(--cream) 0%, var(--blush) 100%);
+    padding: 2rem;
+    overflow: hidden;
+  }
+
+  .hero-flowers {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.55;
+    z-index: 0;
+  }
+
+  .hero-content { position: relative; z-index: 2; }
+
+  .hero .eyebrow { color: var(--rose); margin-bottom: 1.4rem; }
+
+  .hero h1 {
+    font-size: clamp(2.8rem, 9vw, 6rem);
+    line-height: 1.05;
+    color: var(--ink);
+    font-style: italic;
+  }
+
+  .hero h1 span {
+    display: block;
+    font-style: normal;
+    color: var(--rose);
+  }
+
+  .hero p.sub {
+    margin-top: 1.6rem;
+    font-size: 1.05rem;
+    color: #6b5f66;
+    max-width: 34ch;
+    line-height: 1.6;
+  }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 2.4rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 0.68rem;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--rose);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    z-index: 2;
+  }
+
+  .scroll-hint .line {
+    width: 1px;
+    height: 34px;
+    background: var(--rose);
+    animation: pulseLine 2.2s ease-in-out infinite;
+  }
+
+  @keyframes pulseLine {
+    0%, 100% { transform: scaleY(1); opacity: 0.6; }
+    50% { transform: scaleY(0.6); opacity: 1; }
+  }
+
+  /* ---------- MESSAGE SECTION ---------- */
+  .message {
+    background: var(--cream);
+    padding: 7rem 1.5rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .message .eyebrow { color: var(--rose); margin-bottom: 1.6rem; }
+
+  .message p {
+    max-width: 46ch;
+    font-size: clamp(1.15rem, 2.6vw, 1.5rem);
+    line-height: 1.75;
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 400;
+    color: var(--ink);
+  }
+
+  .message .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--rose);
+    margin: 2.2rem 0;
+    opacity: 0.6;
+  }
+
+  /* ---------- PHOTOS ---------- */
+  .photos {
+    background: var(--cream);
+    padding: 2rem 1.5rem 7rem;
+    display: flex;
+    justify-content: center;
+    gap: 2.4rem;
+    flex-wrap: wrap;
+  }
+
+  .polaroid {
+    background: #fff;
+    padding: 0.9rem 0.9rem 2.6rem;
+    box-shadow: 0 18px 40px -14px rgba(120, 90, 90, 0.35);
+    width: 240px;
+    text-align: center;
+    position: relative;
+  }
+
+  .polaroid:nth-child(1) { transform: rotate(-4deg); }
+  .polaroid:nth-child(2) { transform: rotate(3deg); }
+
+  .polaroid img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+    background: var(--blush);
+  }
+
+  .polaroid figcaption {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--rose);
+    margin-top: 0.8rem;
+    font-size: 1rem;
+  }
+
+  /* ---------- NIGHT SKY ---------- */
+  .night {
+    position: relative;
+    min-height: 100vh;
+    background: radial-gradient(ellipse at 50% 0%, var(--midnight) 0%, var(--midnight-deep) 70%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 5rem 1.5rem;
+    overflow: hidden;
+  }
+
+  .stars {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .star {
+    position: absolute;
+    background: #fff;
+    border-radius: 50%;
+    animation: twinkle 3.5s ease-in-out infinite;
+  }
+
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.25; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.15); }
+  }
+
+  .night-content { position: relative; z-index: 3; }
+
+  .night .eyebrow { color: var(--lavender); margin-bottom: 1.4rem; }
+
+  .night h2 {
+    color: var(--cream);
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    font-style: italic;
+    margin-bottom: 1.2rem;
+  }
+
+  .night p {
+    color: #cfc9de;
+    max-width: 40ch;
+    margin: 0 auto 2.6rem;
+    line-height: 1.7;
+    font-size: 1.05rem;
+  }
+
+  .wish-star-wrap {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .wish-star {
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+    filter: drop-shadow(0 0 12px rgba(217, 180, 118, 0.6));
+    transition: transform 0.4s ease;
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .wish-star:hover { transform: scale(1.08) rotate(8deg); }
+  .wish-star:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }
+
+  .wish-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .shooting-star {
+    position: absolute;
+    top: 20%;
+    left: -10%;
+    width: 3px;
+    height: 3px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.1);
+    opacity: 0;
+    z-index: 4;
+  }
+
+  .shooting-star.fire {
+    animation: shoot 1.3s ease-out forwards;
+  }
+
+  .shooting-star.fire::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    right: 100%;
+    width: 130px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.9));
+    transform: translateY(-50%);
+  }
+
+  @keyframes shoot {
+    0% { transform: translate(0, 0); opacity: 0; }
+    8% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { transform: translate(130vw, 70vh); opacity: 0; }
+  }
+
+  .wish-message {
+    margin-top: 2.2rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.3rem;
+    color: var(--cream);
+    max-width: 34ch;
+    min-height: 1.6em;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .wish-message.show { opacity: 1; transform: translateY(0); }
+
+  footer {
+    background: var(--midnight-deep);
+    text-align: center;
+    padding: 2.4rem 1.5rem 3rem;
+    color: #8b86a3;
+    font-size: 0.8rem;
+    letter-spacing: 0.06em;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .star, .scroll-hint .line, .wish-star:hover { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ HERO ============ -->
+<section class="hero">
+  <svg class="hero-flowers" viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="#C98B90" stroke-width="1.4" fill="none" opacity="0.7">
+      <path d="M60,560 C80,460 40,380 90,300" />
+      <circle cx="90" cy="300" r="10"/>
+      <circle cx="70" cy="270" r="9"/>
+      <circle cx="112" cy="272" r="9"/>
+      <circle cx="90" cy="255" r="9"/>
+      <path d="M740,60 C700,140 730,220 690,290" />
+      <circle cx="690" cy="290" r="10"/>
+      <circle cx="668" cy="262" r="9"/>
+      <circle cx="712" cy="264" r="9"/>
+      <circle cx="690" cy="248" r="9"/>
+      <path d="M40,120 C30,90 55,70 50,40" />
+      <circle cx="50" cy="40" r="6"/>
+      <circle cx="36" cy="24" r="5"/>
+      <circle cx="64" cy="26" r="5"/>
+    </g>
+  </svg>
+  <div class="hero-content">
+    <p class="eyebrow">A little something for</p>
+    <h1>Happy Birthday<span>[Her Name]</span></h1>
+    <p class="sub">Today the whole world gets to celebrate the fact that you exist. Scroll down — I made you something.</p>
+  </div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <span class="line"></span>
+  </div>
+</section>
+
+<!-- ============ MESSAGE ============ -->
+<section class="message">
+  <p class="eyebrow">A note, just for you</p>
+  <div class="divider"></div>
+  <p>
+    <!-- Replace this with your own words to her -->
+    You make ordinary days feel like something worth remembering.
+    I hope this year brings you every small, quiet joy you deserve —
+    and a few loud, wonderful surprises along the way.
+  </p>
+</section>
+
+<!-- ============ PHOTOS ============ -->
+<section class="photos">
+  <figure class="polaroid">
+    <img src="photo1.jpg" alt="A memory together" onerror="this.style.background='#F3D9D6'; this.removeAttribute('src');">
+    <figcaption>one of my favorites</figcaption>
+  </figure>
+  <figure class="polaroid">
+    <img src="photo2.jpg" alt="A memory together" onerror="this.style.background='#F3D9D6'; this.removeAttribute('src');">
+    <figcaption>and this one too</figcaption>
+  </figure>
+</section>
+
+<!-- ============ NIGHT SKY / SIGNATURE MOMENT ============ -->
+<section class="night">
+  <div class="stars" id="starField"></div>
+  <div class="night-content">
+    <p class="eyebrow">Before you go</p>
+    <h2>Make a wish</h2>
+    <p>Tap the star. Let it carry whatever you're hoping for this year.</p>
+    <div class="wish-star-wrap">
+      <button class="wish-star" id="wishBtn" aria-label="Make a wish">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <polygon points="50,4 61,38 97,38 68,59 79,94 50,73 21,94 32,59 3,38 39,38"
+                   fill="#D9B476" stroke="#F3E3C4" stroke-width="1"/>
+        </svg>
+      </button>
+      <span class="wish-label">wish</span>
+    </div>
+    <p class="wish-message" id="wishMsg">Whatever it was — I hope it finds you. Happy birthday.</p>
+  </div>
+</section>
+
+<footer>made with love, for your day</footer>
+
+<script>
+  // Generate a scattered starfield
+  const field = document.getElementById('starField');
+  const starCount = 90;
+  for (let i = 0; i < starCount; i++) {
+    const s = document.createElement('div');
+    s.className = 'star';
+    const size = Math.random() * 2 + 1;
+    s.style.width = size + 'px';
+    s.style.height = size + 'px';
+    s.style.top = Math.random() * 100 + '%';
+    s.style.left = Math.random() * 100 + '%';
+    s.style.animationDelay = (Math.random() * 3.5) + 's';
+    field.appendChild(s);
+  }
+
+  // Make-a-wish interaction
+  const wishBtn = document.getElementById('wishBtn');
+  const wishMsg = document.getElementById('wishMsg');
+  const nightSection = document.querySelector('.night');
+  let wished = false;
+
+  wishBtn.addEventListener('click', () => {
+    // shooting star
+    const shoot = document.createElement('div');
+    shoot.className = 'shooting-star fire';
+    shoot.style.top = (10 + Math.random() * 30) + '%';
+    nightSection.appendChild(shoot);
+    shoot.addEventListener('animationend', () => shoot.remove());
+
+    if (!wished) {
+      wished = true;
+      setTimeout(() => wishMsg.classList.add('show'), 500);
+    }
+  });
+</script>
+
+</body>
+</html>
