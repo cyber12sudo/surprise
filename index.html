@@ -92,6 +92,15 @@
     line-height: 1.6;
   }
 
+  .hero .from-line {
+    margin-top: 0.9rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--rose);
+    letter-spacing: 0.02em;
+  }
+
   .scroll-hint {
     position: absolute;
     bottom: 2.4rem;
@@ -344,6 +353,7 @@
   /* ---------- HERO LOAD-IN ---------- */
   .hero-content .eyebrow,
   .hero-content h1,
+  .hero-content .from-line,
   .hero-content p.sub {
     opacity: 0;
     transform: translateY(18px);
@@ -351,6 +361,7 @@
   }
   .hero-content .eyebrow { animation-delay: 0.2s; }
   .hero-content h1 { animation-delay: 0.5s; }
+  .hero-content .from-line { animation-delay: 0.75s; }
   .hero-content p.sub { animation-delay: 0.95s; }
   .scroll-hint { opacity: 0; animation: heroIn 1s ease forwards; animation-delay: 1.4s; }
 
@@ -568,7 +579,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .star, .scroll-hint .line, .wish-star:hover, .petal,
-    .hero-content .eyebrow, .hero-content h1, .hero-content p.sub, .scroll-hint,
+    .hero-content .eyebrow, .hero-content h1, .hero-content .from-line, .hero-content p.sub, .scroll-hint,
     .reveal, .reveal-stagger > *, .wish-label, .firefly, .wish-star.sending {
       animation: none !important;
       transition: none !important;
@@ -603,7 +614,8 @@
   </svg>
   <div class="hero-content">
     <p class="eyebrow">A little something for</p>
-    <h1>Happy Birthday<span>[Her Name]</span></h1>
+    <h1>Happy Birthday<span>Ammara</span></h1>
+    <p class="from-line">from Saram</p>
     <p class="sub">Today the whole world gets to celebrate the fact that you exist. Scroll down — I made you something.</p>
   </div>
   <div class="scroll-hint">
@@ -675,8 +687,8 @@
 </section>
 
 <footer>
-  <p>made with love, for your day</p>
-  <p class="signature">Happy Birthday — with all my love, <span>[Your Name]</span></p>
+  <p>Specially for your day</p>
+  <p class="signature">Happy Birthday-, <span>Saram</span></p>
 </footer>
 
 <script>
