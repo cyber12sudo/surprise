@@ -403,15 +403,101 @@
     50% { opacity: 1; }
   }
 
+  /* ---------- FIREFLIES (night ambiance) ---------- */
+  .firefly {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 6px 2px rgba(217, 180, 118, 0.7);
+    animation: driftUp linear infinite;
+    z-index: 2;
+  }
+
+  @keyframes driftUp {
+    0%   { transform: translate(0, 0); opacity: 0; }
+    10%  { opacity: 0.9; }
+    50%  { transform: translate(18px, -55vh); }
+    90%  { opacity: 0.6; }
+    100% { transform: translate(-12px, -100vh); opacity: 0; }
+  }
+
+  /* ---------- TYPEWRITER (note message) ---------- */
+  .typewriter {
+    border-right: 1px solid var(--rose);
+    white-space: normal;
+    overflow: hidden;
+  }
+  .typewriter.done { border-right: none; }
+
+  /* ---------- WISH FORM ---------- */
+  .wish-form {
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.1rem;
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .wish-form textarea {
+    width: 100%;
+    min-height: 92px;
+    resize: vertical;
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(217, 180, 118, 0.35);
+    border-radius: 2px;
+    color: var(--cream);
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.15rem;
+    padding: 0.9rem 1.1rem;
+    line-height: 1.5;
+    transition: border-color 0.4s ease, box-shadow 0.4s ease;
+  }
+
+  .wish-form textarea::placeholder { color: #736d8c; }
+
+  .wish-form textarea:focus {
+    outline: none;
+    border-color: var(--gold);
+    box-shadow: 0 0 0 3px rgba(217, 180, 118, 0.12);
+  }
+
+  .wish-status {
+    font-size: 0.78rem;
+    letter-spacing: 0.08em;
+    color: var(--lavender);
+    min-height: 1.2em;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+  .wish-status.show { opacity: 1; }
+  .wish-status.error { color: #d98b8b; }
+
+  .wish-star.sending {
+    animation: sendPulse 1s ease-in-out infinite;
+    cursor: wait;
+  }
+  @keyframes sendPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(0.9); }
+  }
+
+  .wish-star:disabled { cursor: default; }
+
   @media (prefers-reduced-motion: reduce) {
     .star, .scroll-hint .line, .wish-star:hover, .petal,
     .hero-content .eyebrow, .hero-content h1, .hero-content p.sub, .scroll-hint,
-    .reveal, .reveal-stagger > *, .wish-label {
+    .reveal, .reveal-stagger > *, .wish-label, .firefly, .wish-star.sending {
       animation: none !important;
       transition: none !important;
       opacity: 1 !important;
       transform: none !important;
     }
+    .typewriter { border-right: none; }
   }
 </style>
 </head>
@@ -439,7 +525,7 @@
   </svg>
   <div class="hero-content">
     <p class="eyebrow">A little something for</p>
-    <h1>Happy Birthday<span>[Ammara]</span></h1>
+    <h1>Happy Birthday<span>Ammara</span></h1>
     <p class="sub">Today the whole world gets to celebrate the fact that you exist. Scroll down — I made you something.</p>
   </div>
   <div class="scroll-hint">
@@ -453,11 +539,7 @@
 <section class="message reveal">
   <p class="eyebrow">A note, just for you</p>
   <div class="divider"></div>
-  <p>
-    <!-- Replace this with your own words to her -->
-    I hope this year brings you every small, quiet joy you deserve —
-    and a few loud, wonderful surprises along the way.
-  </p>
+  <p><span class="typewriter" id="noteText"><!-- Replace this with your own words to her -->You make ordinary days feel like something worth remembering. I hope this year brings you every small, quiet joy you deserve — and a few loud, wonderful surprises along the way.</span></p>
 </section>
 
 <!-- ============ PHOTOS ============ -->
@@ -475,19 +557,29 @@
 <!-- ============ NIGHT SKY / SIGNATURE MOMENT ============ -->
 <section class="night">
   <div class="stars" id="starField"></div>
+  <div id="fireflyField"></div>
   <div class="night-content reveal">
     <p class="eyebrow">Before you go</p>
     <h2>Make a wish</h2>
-    <p>Tap the star. Let it carry whatever you're hoping for this year.</p>
-    <div class="wish-star-wrap">
-      <button class="wish-star" id="wishBtn" aria-label="Make a wish">
-        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-          <polygon points="50,4 61,38 97,38 68,59 79,94 50,73 21,94 32,59 3,38 39,38"
-                   fill="#D9B476" stroke="#F3E3C4" stroke-width="1"/>
-        </svg>
-      </button>
-      <span class="wish-label">wish</span>
-    </div>
+    <p>Write down what you're hoping for this year, then tap the star to send it out into the sky.</p>
+
+    <form class="wish-form" id="wishForm">
+      <!-- Honeypot field to catch spam bots; leave this hidden input as-is -->
+      <input type="text" name="_gotcha" style="display:none">
+      <textarea name="wish" id="wishInput" placeholder="Write your wish here..." required></textarea>
+
+      <div class="wish-star-wrap">
+        <button type="submit" class="wish-star" id="wishBtn" aria-label="Send your wish">
+          <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="50,4 61,38 97,38 68,59 79,94 50,73 21,94 32,59 3,38 39,38"
+                     fill="#D9B476" stroke="#F3E3C4" stroke-width="1"/>
+          </svg>
+        </button>
+        <span class="wish-label" id="wishLabel">send</span>
+      </div>
+      <p class="wish-status" id="wishStatus"></p>
+    </form>
+
     <p class="wish-message" id="wishMsg">Whatever it was — I hope it finds you. Happy birthday.</p>
   </div>
 </section>
@@ -495,6 +587,110 @@
 <footer>made with love, for your day</footer>
 
 <script>
+  // Fireflies drifting up through the night sky
+  const fireflyField = document.getElementById('fireflyField');
+  const fireflyCount = 18;
+  for (let i = 0; i < fireflyCount; i++) {
+    const f = document.createElement('div');
+    f.className = 'firefly';
+    f.style.left = Math.random() * 100 + '%';
+    f.style.bottom = (Math.random() * 20) + '%';
+    f.style.animationDuration = (7 + Math.random() * 6) + 's';
+    f.style.animationDelay = (Math.random() * 10) + 's';
+    fireflyField.appendChild(f);
+  }
+
+  // Typewriter effect for the note, triggered when it scrolls into view
+  const noteEl = document.getElementById('noteText');
+  const fullText = noteEl.textContent;
+  noteEl.textContent = '';
+  let typed = false;
+
+  const typeObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting && !typed) {
+        typed = true;
+        let i = 0;
+        const speed = 22;
+        const tick = () => {
+          noteEl.textContent = fullText.slice(0, i);
+          i++;
+          if (i <= fullText.length) {
+            setTimeout(tick, speed);
+          } else {
+            noteEl.classList.add('done');
+          }
+        };
+        setTimeout(tick, 500);
+        typeObserver.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+  typeObserver.observe(noteEl);
+
+  // ---- Make-a-wish form: sends her wish to your inbox via Formspree ----
+  //
+  // SETUP (do this once, before you publish):
+  // 1. Go to formspree.io and sign up free with your email.
+  // 2. Create a new form, and copy the endpoint it gives you
+  //    (looks like: https://formspree.io/f/abcd1234)
+  // 3. Paste it below, replacing the placeholder.
+  const FORM_ENDPOINT = "https://formspree.io/f/xrenzjoa";
+
+  const wishForm = document.getElementById('wishForm');
+  const wishInput = document.getElementById('wishInput');
+  const wishBtn = document.getElementById('wishBtn');
+  const wishLabel = document.getElementById('wishLabel');
+  const wishStatus = document.getElementById('wishStatus');
+  const wishMsg = document.getElementById('wishMsg');
+  const nightSection = document.querySelector('.night');
+
+  function launchShootingStar() {
+    const shoot = document.createElement('div');
+    shoot.className = 'shooting-star fire';
+    shoot.style.top = (10 + Math.random() * 30) + '%';
+    nightSection.appendChild(shoot);
+    shoot.addEventListener('animationend', () => shoot.remove());
+  }
+
+  wishForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const wishText = wishInput.value.trim();
+    if (!wishText) return;
+
+    wishBtn.classList.add('sending');
+    wishBtn.disabled = true;
+    wishLabel.textContent = 'sending';
+    wishStatus.classList.remove('show', 'error');
+
+    try {
+      const res = await fetch(FORM_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: new FormData(wishForm)
+      });
+
+      launchShootingStar();
+
+      if (res.ok) {
+        wishLabel.textContent = 'sent';
+        wishStatus.textContent = 'Your wish is on its way.';
+        wishStatus.classList.add('show');
+        wishInput.disabled = true;
+        setTimeout(() => wishMsg.classList.add('show'), 600);
+      } else {
+        throw new Error('Request failed');
+      }
+    } catch (err) {
+      wishBtn.disabled = false;
+      wishLabel.textContent = 'try again';
+      wishStatus.textContent = "Couldn't send just now — give it one more try.";
+      wishStatus.classList.add('show', 'error');
+    } finally {
+      wishBtn.classList.remove('sending');
+    }
+  });
+
   // Falling petals in the hero
   const petalField = document.getElementById('petalField');
   const petalCount = 12;
@@ -543,26 +739,6 @@
     s.style.animationDelay = (Math.random() * 3.5) + 's';
     field.appendChild(s);
   }
-
-  // Make-a-wish interaction
-  const wishBtn = document.getElementById('wishBtn');
-  const wishMsg = document.getElementById('wishMsg');
-  const nightSection = document.querySelector('.night');
-  let wished = false;
-
-  wishBtn.addEventListener('click', () => {
-    // shooting star
-    const shoot = document.createElement('div');
-    shoot.className = 'shooting-star fire';
-    shoot.style.top = (10 + Math.random() * 30) + '%';
-    nightSection.appendChild(shoot);
-    shoot.addEventListener('animationend', () => shoot.remove());
-
-    if (!wished) {
-      wished = true;
-      setTimeout(() => wishMsg.classList.add('show'), 500);
-    }
-  });
 </script>
 
 </body>
